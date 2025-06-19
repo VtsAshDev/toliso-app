@@ -53,7 +53,9 @@ class User extends Authenticatable
     protected static function booted(): void
     {
         static::created(function ($user) {
-            $user->wallet()->create();
+            $user->wallet()->create([
+                'balance' => 0
+            ]);
         });
     }
 
