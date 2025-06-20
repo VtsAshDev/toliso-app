@@ -29,7 +29,7 @@ class Wallet extends Model
 
   public function savingRelation() : HasOne
   {
-      return $this->hasOne(Saving::class, 'wallet_id');
+      return $this->hasOne(Saving::class);
   }
 
   public function transactions() : HasMany
