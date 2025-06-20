@@ -57,7 +57,6 @@ class User extends Authenticatable
             $user->categories()->create(['name' => 'Despesas']);
         });
     }
-
     public function wallet(): HasOne
     {
         return $this->hasOne(Wallet::class);
