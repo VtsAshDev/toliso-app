@@ -64,7 +64,7 @@ class User extends Authenticatable
         return $this->hasOne(Wallet::class);
     }
 
-    public function category(): HasMany
+    public function categories(): HasMany
     {
         return $this->hasMany(Category::class);
     }
