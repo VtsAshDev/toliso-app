@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('wallet_id')->constrained();
-            $table->foreignId('category_id')->constrained();
+            $table->foreignId('category_id')->constrained()->nullable();
             $table->boolean('is_recurring')->default(false);
             $table->string('description');
             $table->decimal('amount');
