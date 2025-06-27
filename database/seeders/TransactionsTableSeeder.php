@@ -27,7 +27,7 @@ class TransactionsTableSeeder extends Seeder
                 'wallet_id' => $wallet->id,
                 'category_id' => $category->id,
                 'is_recurring' => false,
-                'description' => fake()->text,
+                'description' => fake()->text(50),
                 'amount' => fake()->numberBetween(1000, 10000),
                 'installments' => 0,
                 'due_date' => fake()->date(),
