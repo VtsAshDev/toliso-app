@@ -16,19 +16,18 @@ class TransactionController extends Controller
     public function index() : View
     {
        $wallet = auth()->user()->wallet;
-
-//       $transactions = $wallet->transactions()->with('category')->get();$
-        $transactions = DB::table('transactions')
-            ->join('categories', 'transactions.category_id', '=', 'categories.id')
-            ->join('wallets', 'transactions.wallet_id', '=', 'wallets.id')
-            ->join('users', 'wallets.user_id', '=', 'users.id')
-            ->where('users.id', auth()->id())
-            ->select(
-                'transactions.*',
-                'categories.name as category_name',
-                'categories.type as category_type',
-            )
-            ->get();
+       $transactions = $wallet->transactions()->with('category')->get();
+//        $transactions = DB::table('transactions')
+//            ->join('categories', 'transactions.category_id', '=', 'categories.id')
+//            ->join('wallets', 'transactions.wallet_id', '=', 'wallets.id')
+//            ->join('users', 'wallets.user_id', '=', 'users.id')
+//            ->where('users.id', auth()->id())
+//            ->select(
+//                'transactions.*',
+//                'categories.name as category_name',
+//                'categories.type as category_type',
+//            )
+//            ->get();
 
         return view('transactions.index', compact('transactions'));
     }
@@ -68,4 +67,44 @@ class TransactionController extends Controller
         return redirect()->route('transactions.index');
     }
 
+    public function edit(Transaction $transaction) : View
+    {
+
+        $user = auth()->user();
+
+        $transaction = $user->wallet->transactions()->findOrFail($transaction->id);
+        $categories = $user->categories()->get();
+
+        return view('transactions.edit', compact('transaction','categories'));
+    }
+
+    public function update(Request $request, Transaction $transaction) : RedirectResponse
+    {
+
+        $request->validate([
+            'category_id'      => 'required|exists:categories,id',
+            'description'      => 'required|string|max:255',
+            'value'            => 'required|numeric|min:0',
+            'installments'     => 'nullable|integer|min:1',
+            'is_recurring'     => 'required|boolean',
+            'due_date'         => 'nullable|date',
+            'transaction_date' => 'required|date',
+        ]);
+
+        $user = auth()->user();
+
+        $transaction = $user->wallet->transactions()->findOrFail($transaction->id);
+
+        $transaction->update([
+            'category_id'      => $request->category_id,
+            'is_recurring'     => $request->is_recurring,
+            'description'     => $request->description,
+            'amount'          => $request->value,
+            'installments'    => $request->installments,
+            'due_date'        => $request->due_date == null ? null : Carbon::parse($request->due_date),
+            'transaction_date'=> Carbon::parse($request->transaction_date),
+        ]);
+
+        return redirect()->route('transactions.index')->with('success', 'Transaction updated!');
+    }
 }

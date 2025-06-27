@@ -38,6 +38,7 @@
                             <th class="px-6 py-3 text-center">Parcelas</th>
                             <th class="px-6 py-3 text-center">Recorrente</th>
                             <th class="px-6 py-3 text-center">Vencimento</th>
+                            <th class="px-6 py-3 text-center">Ação</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -47,19 +48,19 @@
                                     {{ $transaction->description }}
                                 </td>
                                 <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-            <span class="{{ $transaction->category_type == 'income' ? 'text-green-600' : 'text-red-600' }}">
-                R$ {{ number_format($transaction->amount, 2, ',', '.') }}
-            </span>
+                                    <span class="{{ $transaction->category->type == 'income' ? 'text-green-600' : 'text-red-600' }}">
+                                        R$ {{ number_format($transaction->amount, 2, ',', '.') }}
+                                    </span>
                                 </td>
                                 <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
                                     {{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d/m/Y') }}
                                 </td>
 
                                 <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
-                                    {{ $transaction->category_name ?? 'Sem categoria' }}
+                                    {{ $transaction->category->name ?? 'Sem categoria' }}
                                 </td>
                                 <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
-                                    {{ $transaction->category_type == 'income' ? 'Entrada' : 'Saída' }}
+                                    {{ $transaction->category->type == 'income' ? 'Entrada' : 'Saída' }}
                                 </td>
                                 <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
                                     {{ $transaction->installments ?? '' }}
@@ -69,6 +70,9 @@
                                 </td>
                                 <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
                                     {{$transaction->due_date == null ? '' : \Carbon\Carbon::parse($transaction->due_date)->format('d/m/Y') }}
+                                </td>
+                                <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
+                                    <a href="{{ route('transactions.edit', $transaction) }}">Editar</a>
                                 </td>
                             </tr>
                         @empty
