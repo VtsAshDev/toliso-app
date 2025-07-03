@@ -27,7 +27,37 @@
                                     Nova Transação
                                 </a>
                             </div>
+                            <form method="GET" action="{{ route('transactions.index') }}" class="flex flex-1  gap-4 mb-4">
+                                <div>
+                                    <label for="type" class="block text-sm font-medium text-gray-500">Tipo</label>
+                                    <select name="type" id="type" class="mt-1 block w-full border-gray-300 rounded-md bg-gray-800">
+                                        <option value="">Todos</option>
+                                        <option value="income" {{ request('type') == 'income' ? 'selected' : '' }}>Receita</option>
+                                        <option value="expense" {{ request('type') == 'expense' ? 'selected' : '' }}>Despesa</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="category" class="block text-sm font-medium text-gray-500">Categoria</label>
+                                    <input type="text" name="category" id="category" value="{{ request('category') }}" class="mt-1 block w-full border-gray-300 rounded-md bg-gray-800" />
+                                </div>
+
+                                <div>
+                                    <label for="date_from" class="block text-sm font-medium text-gray-500">Data Inicial</label>
+                                    <input type="date" name="date_from" id="date_from" value="{{ request('date_from') }}" class="mt-1 block w-full border-gray-300 rounded-md bg-gray-800" />
+                                </div>
+
+                                <div>
+                                    <label for="date_to" class="block text-sm font-medium text-gray-500">Data Final</label>
+                                    <input type="date" name="date_to" id="date_to" value="{{ request('date_to') }}" class="mt-1 block w-full border-gray-300 rounded-md bg-gray-800" />
+                                </div>
+
+                                <div class="flex gap-2 mt-4">
+                                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Filtrar</button>
+                                    <a href="{{ route('transactions.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded ">Limpar</a>
+                                </div>
+                            </form>
                         </caption>
+
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th class="px-6 py-3">Descrição</th>
@@ -71,8 +101,13 @@
                                 <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
                                     {{$transaction->due_date == null ? '' : \Carbon\Carbon::parse($transaction->due_date)->format('d/m/Y') }}
                                 </td>
-                                <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
+                                <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300 justify-between">
                                     <a href="{{ route('transactions.edit', $transaction) }}">Editar</a>
+                                    <form action="{{ route('transactions.destroy', $transaction) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir?')" style="display:inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Excluir</button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty

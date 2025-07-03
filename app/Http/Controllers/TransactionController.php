@@ -13,24 +13,36 @@ use Illuminate\View\View;
 
 class TransactionController extends Controller
 {
-    public function index() : View
+    public function index(Request $request): View
     {
-       $wallet = auth()->user()->wallet;
-       $transactions = $wallet->transactions()->with('category')->get();
-//        $transactions = DB::table('transactions')
-//            ->join('categories', 'transactions.category_id', '=', 'categories.id')
-//            ->join('wallets', 'transactions.wallet_id', '=', 'wallets.id')
-//            ->join('users', 'wallets.user_id', '=', 'users.id')
-//            ->where('users.id', auth()->id())
-//            ->select(
-//                'transactions.*',
-//                'categories.name as category_name',
-//                'categories.type as category_type',
-//            )
-//            ->get();
+        $wallet = auth()->user()->wallet;
+        $query = $wallet->transactions()->with('category');
+
+        if ($request->filled('type')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('type', $request->type);
+            });
+        }
+
+        if($request->filled('category')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('name', $request->category);
+            });
+        }
+
+        if ($request->filled('date_from')) {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+
+        if ($request->filled('date_to')) {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
+        $transactions = $query->get();
 
         return view('transactions.index', compact('transactions'));
     }
+
 
     public function create(): View
     {
@@ -91,10 +103,6 @@ class TransactionController extends Controller
             'transaction_date' => 'required|date',
         ]);
 
-        $user = auth()->user();
-
-        $transaction = $user->wallet->transactions()->findOrFail($transaction->id);
-
         $transaction->update([
             'category_id'      => $request->category_id,
             'is_recurring'     => $request->is_recurring,
@@ -106,5 +114,12 @@ class TransactionController extends Controller
         ]);
 
         return redirect()->route('transactions.index')->with('success', 'Transaction updated!');
+    }
+
+    public function destroy(Transaction $transaction) : RedirectResponse
+    {
+        $transaction->delete();
+
+        return redirect()->route('transactions.index')->with('success', 'Transaction deleted!');
     }
 }
