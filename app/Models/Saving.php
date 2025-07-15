@@ -10,6 +10,7 @@ class Saving extends Model
 
     protected $fillable = [
         'balance',
+        'note',
         'wallet_id'
     ];
 
