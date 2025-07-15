@@ -16,11 +16,6 @@ class CategoryController extends Controller
         return view('categories.index', compact('categories'));
     }
 
-    public function show(Category $category): View
-    {
-        return view('welcome', compact('category'));
-    }
-
     public function create(): View
     {
         return view('categories.create');
