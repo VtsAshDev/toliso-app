@@ -1,5 +1,7 @@
 @if(session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
+    <x-alert type="success" message="{{ session('success') }}" />
+@elseif (session('error'))
+    <x-alert type="error" message="{{ session('error') }}" />
 @endif
 <x-app-layout>
     <x-slot name="header">

@@ -21,7 +21,6 @@ Route::middleware('auth')->group(function () {
         Route::patch('/', 'update')->name('update');
         Route::delete('/', 'destroy')->name('destroy');
     });
-    Route::resource('profile.destroy', ProfileController::class)->except(['show',])->names('profile');
     Route::resource('categories', CategoryController::class)->except(['show'])->names('categories');
     Route::resource('transactions', TransactionController::class)->except(['show'])->names('transactions');
     Route::resource('savings', SavingController::class)->except(['show'])->names('savings');
