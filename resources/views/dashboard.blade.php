@@ -26,6 +26,7 @@
                     </div>
                 </div>
                 <canvas id="transactionsChart" height="100"></canvas>
+                <div id="chart-error" class="text-center text-red-500 mt-4 hidden">O gráfico não está disponível no momento.</div>
                 <div class="flex justify-end mt-2">
                     <span class="text-xs text-gray-400">Últimas Transações</span>
                 </div>
@@ -126,56 +127,61 @@
             const chartLabels = @json($chartLabels);
             const chartDataCurrent = @json($chartDataCurrent);
             const chartDataPrevious = @json($chartDataPrevious);
-            const ctx = document.getElementById('transactionsChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: chartLabels,
-                    datasets: [
-                        {
-                            label: 'Gastos atuais',
-                            data: chartDataCurrent,
-                            backgroundColor: 'rgba(255, 99, 71, 0.7)',
-                            borderRadius: 10,
-                            barPercentage: 0.5,
-                            categoryPercentage: 0.5,
+            try {
+                const ctx = document.getElementById('transactionsChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: chartLabels,
+                        datasets: [
+                            {
+                                label: 'Gastos atuais',
+                                data: chartDataCurrent,
+                                backgroundColor: 'rgba(255, 99, 71, 0.7)',
+                                borderRadius: 10,
+                                barPercentage: 0.5,
+                                categoryPercentage: 0.5,
+                            },
+                            {
+                                label: 'Gastos Comparados a semana anterior',
+                                data: chartDataPrevious,
+                                backgroundColor: 'rgba(55, 55, 55, 0.7)',
+                                borderRadius: 10,
+                                barPercentage: 0.5,
+                                categoryPercentage: 0.5,
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 16,
+                                    boxHeight: 10,
+                                    font: { size: 14 }
+                                }
+                            }
                         },
-                        {
-                            label: 'Gastos Comparados a semana anterior',
-                            data: chartDataPrevious,
-                            backgroundColor: 'rgba(55, 55, 55, 0.7)',
-                            borderRadius: 10,
-                            barPercentage: 0.5,
-                            categoryPercentage: 0.5,
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'bottom',
-                            labels: {
-                                boxWidth: 16,
-                                boxHeight: 10,
-                                font: { size: 14 }
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: '#b0b0b0', font: { size: 14 } }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                grid: { color: '#e5e5e5' },
+                                ticks: { color: '#b0b0b0', font: { size: 14 } }
                             }
                         }
-                    },
-                    scales: {
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: '#b0b0b0', font: { size: 14 } }
-                        },
-                        y: {
-                            beginAtZero: true,
-                            grid: { color: '#e5e5e5' },
-                            ticks: { color: '#b0b0b0', font: { size: 14 } }
-                        }
                     }
-                }
-            });
+                });
+            } catch (e) {
+                document.getElementById('transactionsChart').style.display = 'none';
+                document.getElementById('chart-error').classList.remove('hidden');
+            }
         </script>
         <!-- Material Icons CDN -->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
