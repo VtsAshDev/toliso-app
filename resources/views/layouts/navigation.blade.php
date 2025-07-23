@@ -16,7 +16,7 @@
             </li>
             <li>
                 <a href="{{ route('categories.index') }}" class="flex items-center px-4 py-2 rounded-full font-medium text-gray-600 hover:bg-gray-200">
-                    <span class="material-icons mr-2">flag</span> Metas
+                    <span class="material-icons mr-2">label</span> Categorias
                 </a>
             </li>
             <li>
