@@ -96,7 +96,7 @@
                 </ul>
             </div>
             <!-- RoadMap Financeiro + Categorias -->
-            
+
                 <div class="bg-orange-100 rounded-2xl shadow p-6 flex flex-col items-center justify-center">
                     <img src="https://img.icons8.com/ios-filled/50/000000/diamond.png" class="w-12 h-12 mb-2" />
                     <div class="font-semibold text-lg text-gray-800 mb-2">RoadMap Financeiro</div>
@@ -124,9 +124,9 @@
         <!-- Chart.js CDN -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-            const chartLabels = @json($chartLabels);
-            const chartDataCurrent = @json($chartDataCurrent);
-            const chartDataPrevious = @json($chartDataPrevious);
+            const chartLabels = @json($chartData['chartLabels']);
+            const chartDataCurrent = @json($chartData['chartDataCurrent']);
+            const chartDataPrevious = @json($chartData['chartDataPrevious']);
             try {
                 const ctx = document.getElementById('transactionsChart').getContext('2d');
                 new Chart(ctx, {
