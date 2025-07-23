@@ -15,16 +15,21 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex">
+        <div class="bg-gray-100 dark:bg-gray-900 flex">
             @include('layouts.navigation')
 
-            <div class="flex-1 flex flex-col">
+            <div class="flex-1 flex-col gap-8 p-8 bg-gray-100 ">
                 @isset($header)
-                    <header class="bg-white dark:bg-gray-800 shadow">
-                        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                            {{ $header }}
+                    <div class="flex items-center justify-between">
+                        <h1 class="text-5xl font-bold text-gray-800">{{$header}}</h1>
+                        <div class="flex items-center gap-8">
+                            <div class="relative w-80">
+                                <input type="text" placeholder="Enter your search" class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-400" />
+                                <span class="material-icons absolute left-3 top-2.5 text-gray-400">search</span>
+                            </div>
+                            <span class="material-icons text-gray-400 text-3xl">notifications</span>
                         </div>
-                    </header>
+                    </div>
                 @endisset
 
                 <main>

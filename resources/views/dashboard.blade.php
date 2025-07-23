@@ -1,17 +1,8 @@
 <x-app-layout>
-    <div class="flex flex-col gap-8 p-8 bg-gray-100 min-h-screen">
-        <!-- Header -->
-        <div class="flex items-center justify-between">
-            <h1 class="text-5xl font-bold text-gray-800">Dashboard</h1>
-            <div class="flex items-center gap-8">
-                <div class="relative w-80">
-                    <input type="text" placeholder="Enter your search" class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-400" />
-                    <span class="material-icons absolute left-3 top-2.5 text-gray-400">search</span>
-                </div>
-                <span class="material-icons text-gray-400 text-3xl">notifications</span>
-            </div>
-        </div>
-        <!-- Grid -->
+    <x-slot name="header">
+        {{ __('DashBoard') }}
+    </x-slot>
+    <div class="flex flex-col gap-8 p-8 bg-gray-100">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Últimas Transações + Gráfico -->
             <div class="col-span-2 bg-white rounded-2xl shadow p-6 flex flex-col">
