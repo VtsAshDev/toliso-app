@@ -20,26 +20,26 @@
                 </div>
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 bg-gray-100 rounded-2xl">
 
-                    <thead class="text-md font-bold text-gray-700 uppercase">
-                        <tr>
+                    <thead>
+                        <tr class="text-md text-center font-bold text-gray-700 uppercase">
                             <th class="p-4 flex justify-center">
                                 <input id="default-checkbox" type="checkbox" value="" class="p-3 text-orange-600 bg-gray-100 border-gray-300 rounded-md  focus:ring-1 focus:ring-orange-500 bg-white-700 ">
                             </th>
-                            <th scope="col" class="px-6 py-3  text-left rtl:text-right text-gray-900  ">
+                            <th scope="col" class="px-6 py-3 text-gray-900  ">
                                 Nome da Categoria
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left rtl:text-right text-gray-900">
+                            <th scope="col" class="px-6 py- text-gray-900">
                                 Tipo
                             </th>
-                            <th scope="col" class="px-6 py-3 text-center rtl:text-right text-gray-900">
-                                Action
+                            <th scope="col" class="px-6 py-3 text-gray-900">
+                                Ações
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach($categories as $category)
 
-                        <tr class="bg-white border-t border-gray-200">
+                        <tr class="bg-white border-t border-gray-200 hover:bg-gray-200 text-center">
                             <th class="p-4 flex justify-center">
                                 <input id="default-checkbox" type="checkbox" value="" class="p-3 text-orange-600  bg-gray-100 border-gray-300 rounded-md  focus:ring-1 focus:ring-orange-500 bg-white-700 ">
                             </th>
@@ -51,14 +51,14 @@
                                 @else
                                 <td class="px-6 py-4 text-green-500 ">  Entrada </td>
                                 @endif
-                            <td class="px-6 py-4 flex justify-evenly    ">
-                                <a href="{{ route('categories.edit', $category->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
+                            <th class="px-6 py-4 font-md text-gray-700 flex gap-4 justify-center items-center">
+                                <a href="{{ route('categories.edit', $category->id) }}" class="bg-orange-500 p-2 material-icons rounded-3xl text-white">edit</a>
                                 <form action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir?')" style="display:inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Excluir</button>
+                                    <button type="submit" class="font-medium text-white bg-red-500 p-2 rounded-3xl  hover:underline  material-icons">delete</button>
                                 </form>
-                            </td>
+                            </th>
 
                         </tr>
 

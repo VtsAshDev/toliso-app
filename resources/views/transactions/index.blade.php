@@ -1,127 +1,117 @@
 <x-app-layout>
+    @if(session('success'))
+        <div class="mb-4 px-4 py-3 rounded-md bg-green-100 text-green-800 ">
+            {{ session('success') }}
+        </div>
+    @endif
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Transações') }}
-        </h2>
+        {{ __('Transações') }}
     </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @if(session('success'))
-                <div class="mb-4 px-4 py-3 rounded-md bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="relative overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <caption class="p-5 text-lg font-semibold text-left text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-                            Suas Transações
-                            <div class="flex justify-between items-center mt-2">
-                                <p class="text-sm font-normal text-gray-500 dark:text-gray-400 max-w-xl">
-                                    Aqui você vai adicionar seus gastos e ganhos para te auxiliarmos a se organizar pra você não ficar mais liso 😉
-                                </p>
-                                <a href="{{ route('transactions.create') }}"
-                                   class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                    Nova Transação
-                                </a>
+    <div class="flex-1 gap-8 p-8 ">
+        <div class="col-span-3 bg-white overflow-hidden shadow-sm sm:rounded-2xl">
+            <div class="w-full text-left rtl:text-right text-gray-500 p-6 justify-between items-center">
+                <div class="flex justify-between items-center p-4">
+                    <div class="w-full flex justify-between items-center">
+                        <form method="GET" action="{{ route('transactions.index') }}" class="grid grid-cols-7 gap-4 items-end justify-between w-full">
+                            <div class="col-span-1">
+                                <label for="type" class=" text-sm font-medium text-gray-500">Tipo</label>
+                                <select name="type" id="type" class="mt-1  w-full border-gray-300 rounded-md bg-white">
+                                    <option value="">Todos</option>
+                                    <option value="income" {{ request('type') == 'income' ? 'selected' : '' }}>Receita</option>
+                                    <option value="expense" {{ request('type') == 'expense' ? 'selected' : '' }}>Despesa</option>
+                                </select>
                             </div>
-                            <form method="GET" action="{{ route('transactions.index') }}" class="flex flex-1  gap-4 mb-4">
-                                <div>
-                                    <label for="type" class="block text-sm font-medium text-gray-500">Tipo</label>
-                                    <select name="type" id="type" class="mt-1 block w-full border-gray-300 rounded-md bg-gray-800">
-                                        <option value="">Todos</option>
-                                        <option value="income" {{ request('type') == 'income' ? 'selected' : '' }}>Receita</option>
-                                        <option value="expense" {{ request('type') == 'expense' ? 'selected' : '' }}>Despesa</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="category" class="block text-sm font-medium text-gray-500">Categoria</label>
-                                    <input type="text" name="category" id="category" value="{{ request('category') }}" class="mt-1 block w-full border-gray-300 rounded-md bg-gray-800" />
-                                </div>
+                            <div class="col-span-1">
+                                <label for="category" class=" text-sm font-medium text-gray-500">Categoria</label>
+                                <input type="text" name="category" id="category" value="{{ request('category') }}" class="mt-1  w-full border-gray-300 rounded-md bg-white" />
+                            </div>
+                            <div class="col-span-1">
+                                <label for="date_from" class=" text-sm font-medium text-gray-500">Data Inicial</label>
+                                <input type="date" name="date_from" id="date_from" value="{{ request('date_from') }}" class="mt-1  w-full border-gray-300 rounded-md bg-white" />
+                            </div>
+                            <div class="col-span-1">
+                                <label for="date_to" class=" text-sm font-medium text-gray-500">Data Final</label>
+                                <input type="date" name="date_to" id="date_to" value="{{ request('date_to') }}" class="mt-1  w-full border-gray-300 rounded-md bg-white" />
+                            </div>
+                            <div class="col-span-1 ">
+                                <button type="submit" class="material-icons mr-2 bg-orange-500 text-white font-md text-xl px-4 py-2 rounded-3xl">search</button>
+                                <a href="{{ route('transactions.index') }}" class="material-icons mr-2 bg-red-500 text-white font-md text-xl px-4 py-2 rounded-3xl">clear</a>
 
-                                <div>
-                                    <label for="date_from" class="block text-sm font-medium text-gray-500">Data Inicial</label>
-                                    <input type="date" name="date_from" id="date_from" value="{{ request('date_from') }}" class="mt-1 block w-full border-gray-300 rounded-md bg-gray-800" />
-                                </div>
+                            </div>
+                            <div class="col-span-2 flex justify-end">
+                                <x-link-button route='transactions.create' text="+Nova Transação" />
+                            </div>
 
-                                <div>
-                                    <label for="date_to" class="block text-sm font-medium text-gray-500">Data Final</label>
-                                    <input type="date" name="date_to" id="date_to" value="{{ request('date_to') }}" class="mt-1 block w-full border-gray-300 rounded-md bg-gray-800" />
-                                </div>
+                        </form>
+                    </div>
 
-                                <div class="flex gap-2 mt-4">
-                                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Filtrar</button>
-                                    <a href="{{ route('transactions.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded ">Limpar</a>
-                                </div>
-                            </form>
-                        </caption>
+                </div>
 
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th class="px-6 py-3">Descrição</th>
-                            <th class="px-6 py-3">Valor</th>
-                            <th class="px-6 py-3 text-center">Data</th>
-                            <th class="px-6 py-3 text-center">Categoria</th>
-                            <th class="px-6 py-3 text-center">Tipo</th>
-                            <th class="px-6 py-3 text-center">Parcelas</th>
-                            <th class="px-6 py-3 text-center">Recorrente</th>
-                            <th class="px-6 py-3 text-center">Vencimento</th>
-                            <th class="px-6 py-3 text-center">Ação</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @forelse($transactions as $transaction)
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                                    {{ $transaction->description }}
-                                </td>
-                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                <table class="w-full text-gray-500 bg-gray-100 rounded-2xl">
+
+                    <thead >
+                    <tr class="text-xl text-gray-700 text-center">
+                        <th class="px-6 py-3">Descrição</th>
+                        <th class="px-6 py-3">Valor</th>
+                        <th class="px-6 py-3">Data</th>
+                        <th class="px-6 py-3">Categoria</th>
+                        <th class="px-6 py-3">Tipo</th>
+                        <th class="px-6 py-3">Parcelas</th>
+                        <th class="px-6 py-3">Recorrente</th>
+                        <th class="px-6 py-3">Vencimento</th>
+                        <th class="px-6 py-3">Ação</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @forelse($transactions as $transaction)
+                        <tr class="bg-white  border-t hover:bg-gray-200 text-center">
+                            <th class="px-6 py-4 font-md text-gray-700 whitespace-nowrap ">
+                                {{ $transaction->description }}
+                            </th>
+                            <th class="px-6 py-4 font-md ">
                                     <span class="{{ $transaction->category->type == 'income' ? 'text-green-600' : 'text-red-600' }}">
                                         R$ {{ number_format($transaction->amount, 2, ',', '.') }}
                                     </span>
-                                </td>
-                                <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
-                                    {{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d/m/Y') }}
-                                </td>
+                            </th>
+                            <th class="px-6 py-4 font-md text-gray-700 whitespace-nowrap ">
+                                {{ \Carbon\Carbon::parse($transaction->transaction_date)->format('d/m/Y') }}
+                            </th>
 
-                                <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
-                                    {{ $transaction->category->name ?? 'Sem categoria' }}
-                                </td>
-                                <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
-                                    {{ $transaction->category->type == 'income' ? 'Entrada' : 'Saída' }}
-                                </td>
-                                <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
-                                    {{ $transaction->installments ?? '' }}
-                                </td>
-                                <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
-                                    {{ $transaction->is_recurring ? 'Sim' : 'Não' }}
-                                </td>
-                                <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300">
-                                    {{$transaction->due_date == null ? '' : \Carbon\Carbon::parse($transaction->due_date)->format('d/m/Y') }}
-                                </td>
-                                <td class="px-6 py-4 text-center text-gray-700 dark:text-gray-300 justify-between">
-                                    <a href="{{ route('transactions.edit', $transaction) }}">Editar</a>
-                                    <form action="{{ route('transactions.destroy', $transaction) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir?')" style="display:inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Excluir</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr class="bg-white dark:bg-gray-800">
-                                <td colspan="8" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
-                                    Nenhuma transação encontrada.
-                                </td>
-                            </tr>
-                        @endforelse
-                        </tbody>
-
-                    </table>
-                </div>
+                            <th class="px-6 py-4 font-md text-gray-700 whitespace-nowrap ">
+                                {{ $transaction->category->name ?? 'Sem categoria' }}
+                            </th>
+                            <th class="px-6 py-4 font-md text-gray-700 whitespace-nowrap ">
+                                {{ $transaction->category->type == 'income' ? 'Entrada' : 'Saída' }}
+                            </th>
+                            <th class="px-6 py-4 font-md text-gray-700 whitespace-nowrap ">
+                                {{ $transaction->installments ? $transaction->installments.'X' : '-' }}
+                            </th>
+                            <th class="px-6 py-4 font-md text-gray-700 whitespace-nowrap ">
+                                {{ $transaction->is_recurring ? 'Sim' : 'Não'  }}
+                            </th>
+                            <th class="px-6 py-4 font-md text-gray-700 whitespace-nowrap ">
+                                {{!$transaction->is_recurring ? '-' : \Carbon\Carbon::parse($transaction->due_date)->format('d/m/Y') }}
+                            </th>
+                            <th class="px-6 py-4 font-md text-gray-700 flex gap-4 justify-center items-center">
+                                <a href="{{ route('transactions.edit', $transaction) }}" class="bg-orange-500 p-2 material-icons rounded-3xl text-white">edit</a>
+                                <form action="{{ route('transactions.destroy', $transaction) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir?')" style="display:inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="font-medium text-white bg-red-500 p-2 rounded-3xl  hover:underline  material-icons">delete</button>
+                                </form>
+                            </th>
+                        </tr>
+                    @empty
+                        <tr class="bg-white dark:bg-gray-800">
+                            <td colspan="8" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                                Nenhuma transação encontrada.
+                            </td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
             </div>
+
         </div>
     </div>
 </x-app-layout>
